@@ -12,6 +12,10 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 ```
 npm install
 ```
+- After `npm install` again run this command to install `bootstrap, tether and jquery`
+```
+npm install bootstrap@next
+```
 - Download [laravel-api](https://github.com/eliyas5044/laravel-api), which i used as a RESTful api.
 - Run your `angular` app by this command
 ```
