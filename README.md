@@ -1,12 +1,11 @@
 # Angular
 
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.24.
+This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-rc.1.
 
 ## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+First you have to install [angular-cli](https://github.com/angular/angular-cli).
 
 #angular-laravel
-
 - First clone via `git bash` or download.
 - Go to your root folder and run this command
 ```
@@ -19,7 +18,7 @@ npm install bootstrap@next
 - Download [laravel-api](https://github.com/eliyas5044/laravel-api), which i used as a RESTful api.
 - Run your `angular` app by this command
 ```
-ng serve
+ng serve -o
 ```
 and run your `laravel` api by this command
 ```
