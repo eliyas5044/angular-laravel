@@ -1,23 +1,33 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {HttpClientModule} from '@angular/common/http';
+import {ReactiveFormsModule} from '@angular/forms';
 
-import { AppComponent } from './app.component';
-import { BookComponent } from './book/book.component';
-import {BookService} from "./book/book.service";
+import {AppComponent} from './app.component';
+import {LoginComponent} from './login/login.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AdminModule} from './admin/admin.module';
+import {AuthGuardService} from './auth-guard.service';
+import {AuthService} from './auth.service';
+import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
+import {RegisterComponent} from './register/register.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BookComponent,
+    LoginComponent,
+    PageNotFoundComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule,
-    HttpModule
+    HttpClientModule,
+    ReactiveFormsModule,
+    AdminModule,
+    AppRoutingModule
   ],
-  providers: [BookService],
+  providers: [AuthGuardService, AuthService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

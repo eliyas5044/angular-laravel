@@ -1,0 +1,47 @@
+<div class="container">
+  <form [formGroup]="registerForm" (ngSubmit)="register()" class="form-signin" novalidate
+        [class.was-validated]="registerForm.invalid && (registerForm.dirty || registerForm.touched)">
+    <h2 class="form-signin-heading text-center">Please Register</h2>
+
+    <div class="alert alert-danger" *ngIf="dataInvalid">
+      <p *ngFor="let error of formErrors">{{ error }}</p>
+    </div>
+    <div class="form-group">
+      <label for="name" class="sr-only">Name</label>
+      <input type="text" formControlName="name" id="name" class="form-control" [class.is-invalid]="dataInvalid"
+             placeholder="Enter Name" required>
+      <div *ngIf="name.hasError('required')" class="invalid-feedback">
+        Name is required.
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputEmail" class="sr-only">Email address</label>
+      <input type="email" formControlName="email" id="inputEmail" class="form-control" [class.is-invalid]="dataInvalid"
+             placeholder="Enter Email" required>
+      <div *ngIf="email.hasError('required')" class="invalid-feedback">
+        Email is required.
+      </div>
+      <div *ngIf="email.hasError('pattern')" class="invalid-feedback">
+        Email should valid email address.
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" formControlName="password" id="inputPassword" class="form-control"
+             [class.is-invalid]="dataInvalid" placeholder="Enter Password" required>
+      <div *ngIf="password.hasError('required')" class="invalid-feedback">
+        Password is required.
+      </div>
+      <div *ngIf="password.hasError('minlength')" class="invalid-feedback">
+        Password must be at least 6 characters long.
+      </div>
+    </div>
+
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="registerForm.invalid" *ngIf="!formSubmitting">Register</button>
+    <button class="btn btn-lg btn-primary btn-block" type="button" [disabled]="formSubmitting" *ngIf="formSubmitting">Registering...</button>
+  </form>
+  <p class="text-center">Already have account? please login <a [href]="'login'">here</a></p>
+
+</div> <!-- /container -->

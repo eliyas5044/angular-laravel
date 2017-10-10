@@ -1,0 +1,28 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">Angular-Laravel</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link btn btn-outline-secondary" routerLink="./" routerLinkActive="active"
+             [routerLinkActiveOptions]="{ exact: true }">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link btn btn-outline-primary" routerLink="./book" routerLinkActive="active">Book</a>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-outline-danger" (click)="logout()" *ngIf="authService.isLoggedIn">Logout</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
+

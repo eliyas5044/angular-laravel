@@ -1,6 +1,22 @@
 <div class="container">
-  <blockquote *ngFor="let book of books" class="blockquote">
-    <p>{{book.description}}</p>
-    <footer class="blockquote-footer">{{book.author}}</footer>
-  </blockquote>
+  <article>
+    <div class="card">
+      <h2 class="card-header text-center">
+        Books
+      </h2>
+      <div class="alert alert-danger" *ngIf="dataInvalid">
+        <p *ngFor="let error of formErrors">{{ error }}</p>
+      </div>
+    </div>
+  </article>
+  <article *ngFor="let book of books">
+    <div class="card">
+      <div class="card-body">
+        <blockquote class="blockquote mb-0">
+          <p>{{book.description}}</p>
+          <footer class="blockquote-footer"><cite title="Author">{{book.author}}</cite></footer>
+        </blockquote>
+      </div>
+    </div>
+  </article>
 </div>
