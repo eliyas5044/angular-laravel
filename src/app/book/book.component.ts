@@ -34,7 +34,7 @@ export class BookComponent implements OnInit {
           if (err.status === 0) {
             this.formErrors.push('please check your backend server.');
           } else {
-            const errors = JSON.parse(err.error);
+            const errors = err.error;
             const items = [];
             for (const key in errors) {
               if (errors.hasOwnProperty(key)) {
