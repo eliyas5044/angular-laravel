@@ -4,11 +4,9 @@ import {HttpClientModule} from '@angular/common/http';
 import {ReactiveFormsModule} from '@angular/forms';
 
 import {AppComponent} from './app.component';
-import {LoginComponent} from './login/login.component';
 import {AppRoutingModule} from './app-routing.module';
 import {AdminModule} from './admin/admin.module';
-import {AuthGuardService} from './auth-guard.service';
-import {AuthService} from './auth.service';
+import {LoginComponent} from './login/login.component';
 import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 import {RegisterComponent} from './register/register.component';
 
@@ -26,7 +24,7 @@ import {RegisterComponent} from './register/register.component';
     AdminModule,
     AppRoutingModule
   ],
-  providers: [AuthGuardService, AuthService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

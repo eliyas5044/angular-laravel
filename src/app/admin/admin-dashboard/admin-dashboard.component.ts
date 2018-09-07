@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {User} from '../../login/user';
+import { Component, OnInit } from '@angular/core';
+import { User } from '../../user';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -7,18 +8,13 @@ import {User} from '../../login/user';
   styleUrls: ['./admin-dashboard.component.scss']
 })
 export class AdminDashboardComponent implements OnInit {
-  item = JSON.parse(localStorage.getItem('tokens'));
   user: User;
 
-  constructor() {
+  constructor(private authService: AuthService) {
   }
 
   ngOnInit() {
-    if (this.item != null) {
-      if (this.item.token) {
-        this.user = this.item.user;
-      }
-    }
+    this.authService.userObject.subscribe(res => this.user = res);
   }
 
 }

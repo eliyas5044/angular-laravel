@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {AuthService} from '../auth.service';
-import {User} from '../login/user';
-import {HttpErrorResponse} from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../auth.service';
+import { User } from '../user';
+import { setCookie } from '../cookie';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -20,8 +21,9 @@ export class RegisterComponent implements OnInit {
   formErrors = [];
   formSubmitting = false;
 
-  constructor(public authService: AuthService, public router: Router, private fb: FormBuilder) {
-
+  constructor(public authService: AuthService,
+              public router: Router,
+              private fb: FormBuilder) {
   }
 
 
@@ -48,15 +50,20 @@ export class RegisterComponent implements OnInit {
   register() {
     this.formErrors = [];
     this.formSubmitting = true;
-    this.authService.register(this.registerForm.value).subscribe(() => {
+    this.authService.register(this.registerForm.value).subscribe((res) => {
       this.formSubmitting = false;
-      if (this.authService.isLoggedIn) {
-        // Get the redirect URL from our auth service
-        // If no redirect has been set, use the default
-        const redirect = this.authService.redirectUrl ? this.authService.redirectUrl : 'admin';
-        // Redirect the user
-        this.router.navigate([redirect]);
-      }
+      // set token and user cookie
+      setCookie('token', res.token, res.expires);
+      setCookie('user', JSON.stringify(res.user), res.expires);
+      // set token and user
+      this.authService.token.next(res.token);
+      this.authService.userObject.next(res.user);
+      this.authService.isUserLoggedIn.next(true);
+      // Get the redirect URL from our auth service
+      // If no redirect has been set, use the default
+      const redirect = this.authService.redirectUrl ? this.authService.redirectUrl : 'admin';
+      // Redirect the user
+      this.router.navigate([redirect]);
     }, (err: HttpErrorResponse) => {
       this.dataInvalid = true;
       this.formSubmitting = false;
@@ -69,7 +76,7 @@ export class RegisterComponent implements OnInit {
         if (err.status === 0) {
           this.formErrors.push('please check your backend server.');
         } else {
-          const errors = err.error;
+          const errors = JSON.parse(err.error);
           const items = [];
           for (const key in errors) {
             if (errors.hasOwnProperty(key)) {

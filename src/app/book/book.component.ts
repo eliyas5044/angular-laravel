@@ -1,8 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-
-import {BookService} from './book.service';
-import {Book} from './book';
-import {HttpErrorResponse} from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { BookService } from './book.service';
+import { Book } from './book';
 
 @Component({
   selector: 'app-book',
@@ -21,7 +20,7 @@ export class BookComponent implements OnInit {
   ngOnInit() {
     this.bookService.getBooks()
       .subscribe(data => {
-        this.books = data;
+        this.books = data['data'];
       }, (err: HttpErrorResponse) => {
         this.dataInvalid = true;
         this.formSubmitting = false;
@@ -34,7 +33,7 @@ export class BookComponent implements OnInit {
           if (err.status === 0) {
             this.formErrors.push('please check your backend server.');
           } else {
-            const errors = err.error;
+            const errors = JSON.parse(err.error);
             const items = [];
             for (const key in errors) {
               if (errors.hasOwnProperty(key)) {

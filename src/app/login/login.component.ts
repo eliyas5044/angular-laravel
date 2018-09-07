@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../auth.service';
-import {Router} from '@angular/router';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {User} from './user';
-import {HttpErrorResponse} from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../auth.service';
+import { User } from '../user';
+import { setCookie } from '../cookie';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -13,14 +14,16 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  isLoggedIn = false;
   loginForm: FormGroup;
   user: User;
   dataInvalid = false;
   formErrors = [];
   formSubmitting = false;
 
-  constructor(public authService: AuthService, public router: Router, private fb: FormBuilder) {
-
+  constructor(public authService: AuthService,
+              public router: Router,
+              private fb: FormBuilder) {
   }
 
 
@@ -29,8 +32,8 @@ export class LoginComponent implements OnInit {
       email: ['', [Validators.required, Validators.pattern(EMAIL_REGEX)]],
       password: ['', Validators.required]
     });
-
-    if (this.authService.isLoggedIn) {
+    this.authService.isUserLoggedIn.subscribe(res => this.isLoggedIn = res);
+    if (this.isLoggedIn) {
       // Get the redirect URL from our auth service
       // If no redirect has been set, use the default
       const redirect = this.authService.redirectUrl ? this.authService.redirectUrl : 'admin';
@@ -50,15 +53,20 @@ export class LoginComponent implements OnInit {
   login() {
     this.formErrors = [];
     this.formSubmitting = true;
-    this.authService.login(this.loginForm.value).subscribe(() => {
+    this.authService.login(this.loginForm.value).subscribe((res) => {
       this.formSubmitting = false;
-      if (this.authService.isLoggedIn) {
-        // Get the redirect URL from our auth service
-        // If no redirect has been set, use the default
-        const redirect = this.authService.redirectUrl ? this.authService.redirectUrl : 'admin';
-        // Redirect the user
-        this.router.navigate([redirect]);
-      }
+      // set token and user cookie
+      setCookie('token', res.token, res.expires);
+      setCookie('user', JSON.stringify(res.user), res.expires);
+      // set token and user
+      this.authService.token.next(res.token);
+      this.authService.userObject.next(res.user);
+      this.authService.isUserLoggedIn.next(true);
+      // Get the redirect URL from our auth service
+      // If no redirect has been set, use the default
+      const redirect = this.authService.redirectUrl ? this.authService.redirectUrl : 'admin';
+      // Redirect the user
+      this.router.navigate([redirect]);
     }, (err: HttpErrorResponse) => {
       this.dataInvalid = true;
       this.formSubmitting = false;
@@ -71,7 +79,7 @@ export class LoginComponent implements OnInit {
         if (err.status === 0) {
           this.formErrors.push('please check your backend server.');
         } else {
-          const errors = err.error;
+          const errors = JSON.parse(err.error);
           const items = [];
           for (const key in errors) {
             if (errors.hasOwnProperty(key)) {

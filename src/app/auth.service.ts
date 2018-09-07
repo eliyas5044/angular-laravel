@@ -1,57 +1,44 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from '../environments/environment';
+import { User } from './user';
+import { deleteCookie, getCookie } from './cookie';
 
-import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/delay';
-import {HttpClient} from '@angular/common/http';
-
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthService {
-  private url = 'http://laravel-api.dev';
-  isLoggedIn = false;
+  isUserLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  token: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+  userObject: BehaviorSubject<User> = new BehaviorSubject<User>(new User());
   // store the URL so we can redirect after logging in
   redirectUrl = 'admin';
-  item = JSON.parse(localStorage.getItem('tokens'));
-  userId = '';
 
   constructor(private http: HttpClient) {
-    if (this.item != null) {
-      if (this.item.token) {
-        this.isLoggedIn = true;
-      }
-      this.userId = this.item.user.id;
+    const token = getCookie('token');
+    const user = JSON.parse(getCookie('user'));
+    if (token != null) {
+      this.isUserLoggedIn.next(true);
+      this.token.next(token);
+      this.userObject.next(user);
     }
   }
 
-  login(data: any): Observable<boolean> {
-    localStorage.clear();
-    const url = `${this.url}/api/login`;
-    return this.http.post(url, data)
-      .do(res => {
-        this.isLoggedIn = true;
-        localStorage.setItem('tokens', JSON.stringify(res));
-      });
+  login(data: any): Observable<any> {
+    const url = `${environment.apiUrl}/login`;
+    return this.http.post(url, data);
   }
 
-  register(data: any): Observable<boolean> {
-    localStorage.clear();
-    const url = `${this.url}/api/register`;
-    return this.http.post(url, data)
-      .do(res => {
-        this.isLoggedIn = true;
-        localStorage.setItem('tokens', JSON.stringify(res));
-      });
+  register(data: any): Observable<any> {
+    const url = `${environment.apiUrl}/register`;
+    return this.http.post(url, data);
   }
 
-  logout(): void {
-    const url = `${this.url}/api/logout`;
-    this.http.post(url, {
-      id: this.userId
-    }).subscribe(res => {
-      this.isLoggedIn = false;
-      localStorage.clear();
-      console.log(res);
+  logout(token: string): Observable<any> {
+    const url = `${environment.apiUrl}/logout`;
+    return this.http.get(url, {
+      headers: new HttpHeaders().set('Authorization', 'Bearer ' + token),
     });
   }
 

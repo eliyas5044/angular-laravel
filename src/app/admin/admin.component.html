@@ -15,7 +15,7 @@
           <a class="nav-link btn btn-outline-primary" routerLink="./book" routerLinkActive="active">Book</a>
         </li>
         <li class="nav-item">
-          <button class="btn btn-outline-danger" (click)="logout()" *ngIf="authService.isLoggedIn">Logout</button>
+          <button class="btn btn-outline-danger" (click)="logout()" *ngIf="isLoggedIn">Logout</button>
         </li>
       </ul>
     </div>

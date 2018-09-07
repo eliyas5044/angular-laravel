@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {BookComponent} from './book.component';
-import {BookService} from './book.service';
+import { BookComponent } from './book.component';
+import { BookService } from './book.service';
 
 @NgModule({
   imports: [
@@ -10,4 +10,5 @@ import {BookService} from './book.service';
   declarations: [BookComponent],
   providers: [BookService]
 })
-export class BookModule { }
+export class BookModule {
+}

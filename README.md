@@ -1,6 +1,6 @@
 # Angular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.4.4.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.2.1.
 
 ### Development server
 
@@ -13,15 +13,15 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 # angular-laravel
 - First clone via `git bash` or download.
-- Go to your root folder and run this command
+- Go to your root folder and run this command to install packages.
 ```
-npm install
+yarn
 ```
-- Download [laravel-api](https://github.com/eliyas5044/laravel-api), which i used as a RESTful api.
-- You have to change the `api` url `private url = 'http://laravel-api.dev';` in two files, `auth.service.ts` and `book.service.ts`.
+- Download [laravel-api](https://github.com/eliyas5044/laravel-api), which i used as a RESTful api and follow the instructions to run your api.
+- You may change the `api` url in `environment` file.
 - Run your `angular` app by this command
 ```
-ng serve -o
+yarn start
 ```
 - You have to **login** or **register** to view all **books**
 - The *book* url is `http://localhost:4200/admin/book`
