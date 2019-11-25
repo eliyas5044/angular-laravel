@@ -15,7 +15,7 @@ export class BookService {
   }
 
   getBooks(): Observable<Book[]> {
-    const url = `${environment.apiUrl}/book`;
+    const url = `${environment.API_URL}/book`;
     return this.http.get<Book[]>(url, {
       headers: new HttpHeaders({Authorization: 'Bearer ' + this.token})
     });

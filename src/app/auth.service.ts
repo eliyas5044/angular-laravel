@@ -26,17 +26,17 @@ export class AuthService {
   }
 
   login(data: any): Observable<any> {
-    const url = `${environment.apiUrl}/login`;
+    const url = `${environment.API_URL}/login`;
     return this.http.post(url, data);
   }
 
   register(data: any): Observable<any> {
-    const url = `${environment.apiUrl}/register`;
+    const url = `${environment.API_URL}/register`;
     return this.http.post(url, data);
   }
 
   logout(token: string): Observable<any> {
-    const url = `${environment.apiUrl}/logout`;
+    const url = `${environment.API_URL}/logout`;
     return this.http.get(url, {
       headers: new HttpHeaders().set('Authorization', 'Bearer ' + token),
     });

@@ -42,6 +42,6 @@
     <button class="btn btn-lg btn-primary btn-block" type="submit" [disabled]="registerForm.invalid" *ngIf="!formSubmitting">Register</button>
     <button class="btn btn-lg btn-primary btn-block" type="button" [disabled]="formSubmitting" *ngIf="formSubmitting">Registering...</button>
   </form>
-  <p class="text-center">Already have account? please login <a [href]="'login'">here</a></p>
+  <p class="text-center">Already have account? please login <a routerLink="/login">here</a></p>
 
 </div> <!-- /container -->
